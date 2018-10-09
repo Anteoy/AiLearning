@@ -291,6 +291,8 @@ def handwritingClassTest():
     """
     # 1. 导入数据
     hwLabels = []
+    print(os.curdir)
+    print(os.listdir())
     trainingFileList = os.listdir("../../../input/2.KNN/trainingDigits") # load the training set
     m = len(trainingFileList)
     trainingMat = zeros((m, 1024))
