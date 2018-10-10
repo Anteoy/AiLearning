@@ -82,7 +82,7 @@ def classify0(inX, dataSet, labels, k):
     """
     # 取平方
     sqDiffMat = diffMat ** 2
-    # 将矩阵的每一行相加
+    # 将矩阵的每一行相加 axis默认为0 为矩阵通常加法
     sqDistances = sqDiffMat.sum(axis=1)
     # 开方
     distances = sqDistances ** 0.5
@@ -90,6 +90,7 @@ def classify0(inX, dataSet, labels, k):
     # argsort() 是将x中的元素从小到大排列，提取其对应的index（索引），然后输出到y。
     # 例如：y=array([3,0,2,1,4,5]) 则，x[3]=-1最小，所以y[0]=3;x[5]=9最大，所以y[5]=5。
     # print 'distances=', distances
+    # 已经是从小到大的顺序，只需要访问对应的索引就可以获得值 就像下面labels[sortedDistIndicies[i]] 自然dataSet也可以这样访问
     sortedDistIndicies = distances.argsort()
     # print 'distances.argsort()=', sortedDistIndicies
 
@@ -295,11 +296,13 @@ def handwritingClassTest():
     print(os.listdir())
     trainingFileList = os.listdir("../../../input/2.KNN/trainingDigits") # load the training set
     m = len(trainingFileList)
-    trainingMat = zeros((m, 1024))
+    # m行 1024列 0值填充的2维数组 每行是一个模拟图片数字
+    trainingMat = zeros([m, 1024])
     # hwLabels存储0～9对应的index位置， trainingMat存放的每个位置对应的图片向量
     for i in range(m):
         fileNameStr = trainingFileList[i]
         fileStr = fileNameStr.split('.')[0]  # take off .txt
+        # 真实值为文件名第一个 0_0.txt
         classNumStr = int(fileStr.split('_')[0])
         hwLabels.append(classNumStr)
         # 将 32*32的矩阵->1*1024的矩阵
